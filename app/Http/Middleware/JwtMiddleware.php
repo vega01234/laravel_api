@@ -21,19 +21,24 @@ class JwtMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         $rol = ['admin'];
-        try {
-            $token = JWTAuth::parseToken();
-            $user = $token->authenticate();
-        } catch (TokenInvalidException $e) {
-            return $this->unauthorized('Invalid Token');
-        } catch (TokenExpiredException $e) {
-            return $this->unauthorized('Expired Token');
-        } catch (JWTException $e) {
-            return $this->unauthorized('Token Not Found');
-        }
-        if ($user && in_array($user->rol, $rol)) {
-            return $next($request);
-        }
+        $type_user = JWTAuth::parseToken()->getPayload()->get('type_user');
+        // if ($type_user == 1) {
+            try {
+                $token = JWTAuth::parseToken();
+                $user = $token->authenticate();
+            } catch (TokenInvalidException $e) {
+                return $this->unauthorized('Invalid Token');
+            } catch (TokenExpiredException $e) {
+                return $this->unauthorized('Expired Token');
+            } catch (JWTException $e) {
+                return $this->unauthorized('Token Not Found');
+            }
+            if ($user && in_array($user->rol, $rol)) {
+                return $next($request);
+            }
+        // } else {
+        //     dd(JWTAuth::parseToken()->getPayload());
+        // }
         return $this->unauthorized();
     }
 

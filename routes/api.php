@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\ExternalUserController;
+use App\Http\Controllers\Models\ExternalUserController;
 use App\Http\Controllers\Models\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -29,6 +29,5 @@ Route::post('user/external', [AuthController::class, 'external']);
 // Protected
 Route::middleware('jwt.verify')->group(function () {
     Route::get('user/info', [UserController::class, 'index']);
-    Route::get('user/info/external', [ExternalUserController::class, 'index']);
     Route::get('user/block', [UserController::class, 'blockUser']);
 });

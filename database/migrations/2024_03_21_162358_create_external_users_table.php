@@ -13,8 +13,6 @@ return new class extends Migration
     {
         Schema::create('external_users', function (Blueprint $table) {
             $table->id();
-            $table->string('rol');
-            $table->string('token_time');
             $table->timestamps();
         });
     }
